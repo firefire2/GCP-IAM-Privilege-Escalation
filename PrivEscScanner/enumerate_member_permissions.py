@@ -74,9 +74,9 @@ def main(args):
     # credentials = None  # Application-Default
     access_token = input('Enter an access token to use for authentication: ')
     credentials = google.oauth2.credentials.Credentials(access_token.rstrip())
-    crm = discovery.build('cloudresourcemanager', 'v1', credentials=credentials)
+    crm = discovery.build('cloudresourcemanager', 'v1', credentials=credentials, static_discovery=False)
     # Only v2 has folders.getIamPolicy for some reason
-    crmv2 = discovery.build('cloudresourcemanager', 'v2', credentials=credentials)
+    crmv2 = discovery.build('cloudresourcemanager', 'v2', credentials=credentials, static_discovery=False)
 
     project_ancestry = get_project_ancestry(args.project_id, crm)
     policies = get_iam_policies(project_ancestry, args.project_id, crm, crmv2)
@@ -85,7 +85,7 @@ def main(args):
     all_members = get_members_and_their_roles(policies)
     # print(json.dumps(all_members, indent=2))
 
-    iam = discovery.build('iam', 'v1', credentials=credentials)
+    iam = discovery.build('iam', 'v1', credentials=credentials, static_discovery=False)
 
     all_permissions = {
         'Organizations': {},
